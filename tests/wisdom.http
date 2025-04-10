@@ -1,0 +1,7 @@
+### Get philosophical wisdom based on Stoic principles
+POST http://localhost:3000/api/wisdom
+Content-Type: application/json
+
+{
+  "question": "How should I deal with conflicts at work?"
+}
