@@ -12,7 +12,7 @@ if (!process.env.OPENAI_API_KEY) {
 export const config = {
   openaiApiKey: process.env.OPENAI_API_KEY,
   port: process.env.PORT || 3000,
-  booksDir: "./src/data/books",
+  dataDir: "./src/data",
   modelConfig: {
     temperature: 0,
     modelName: "gpt-4o",

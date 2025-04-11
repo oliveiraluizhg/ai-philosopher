@@ -3,5 +3,21 @@ POST http://localhost:3000/api/wisdom
 Content-Type: application/json
 
 {
-  "question": "How should I deal with conflicts at work?"
+  "theme": "The importance of self-awareness in personal growth"
+}
+
+### Get philosophical wisdom based on Stoic principles
+POST http://localhost:3000/api/wisdom
+Content-Type: application/json
+
+{
+  "theme": "Embracing Adversity as a Path to Growth"
+}
+
+### Get philosophical wisdom based on Stoic principles
+POST http://localhost:3000/api/wisdom
+Content-Type: application/json
+
+{
+  "theme": "Developing Emotional Resilience"
 }

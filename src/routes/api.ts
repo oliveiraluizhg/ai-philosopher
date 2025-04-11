@@ -6,12 +6,12 @@ const router = express.Router();
 // Route for getting stoic wisdom
 router.post("/wisdom", async (req, res) => {
   try {
-    const { question } = req.body;
-    if (!question) {
-      return res.status(400).json({ error: "Question is required" });
+    const { theme } = req.body;
+    if (!theme) {
+      return res.status(400).json({ error: "Theme is required" });
     }
 
-    const response = await queryVectorStore(question);
+    const response = await queryVectorStore(theme);
 
     res.json(response);
   } catch (error) {

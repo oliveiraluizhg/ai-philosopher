@@ -1,0 +1,62 @@
+[
+  {
+    "author": "Seneca",
+    "title": "Letters from a Stoic",
+    "source": "letters_from_a_stoic.txt",
+    "style": {
+      "tone": "direct and practical",
+      "themes": ["virtue", "discipline", "freedom", "temperance"],
+      "structure": "epistolary",
+      "key_phrases": [
+        "true freedom comes from the strength to say no",
+        "we're all slaves to one thing or another",
+        "discipline is not just about action; it's about control"
+      ]
+    }
+  },
+  {
+    "author": "Epictetus",
+    "title": "Discourses and Selected Writings",
+    "source": "discourses_and_selected_writings.txt",
+    "style": {
+      "tone": "challenging and transformative",
+      "themes": ["inner freedom", "self-mastery", "practical wisdom"],
+      "structure": "dialogic",
+      "key_phrases": [
+        "the empire between our ears",
+        "even slaves can be freer than emperors",
+        "true power lies not in external possessions"
+      ]
+    }
+  },
+  {
+    "author": "Marcus Aurelius",
+    "title": "Meditations",
+    "source": "meditations.txt",
+    "style": {
+      "tone": "reflective and personal",
+      "themes": ["self-improvement", "resilience", "virtue"],
+      "structure": "journal",
+      "key_phrases": [
+        "the obstacle is the way",
+        "you have power over your mind",
+        "waste no more time arguing about what a good man should be"
+      ]
+    }
+  },
+  {
+    "author": "Epictetus",
+    "title": "Enchiridion",
+    "source": "enchiridion.txt",
+    "style": {
+      "tone": "practical and direct",
+      "themes": ["control", "acceptance", "freedom"],
+      "structure": "manual",
+      "key_phrases": [
+        "some things are in our control and others not",
+        "it's not what happens to you, but how you react to it",
+        "if you want to improve, be content to be thought foolish"
+      ]
+    }
+  }
+]

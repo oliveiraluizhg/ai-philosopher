@@ -5,13 +5,13 @@ A modern AI-powered philosophical assistant that combines classical wisdom with 
 ## Features
 
 - **Stoic Wisdom**: Get personalized philosophical advice based on Stoic principles
-- **RAG Implementation**: Uses Retrieval Augmented Generation with classical philosophical texts
+- **RAG Implementation**: Uses Retrieval Augmented Generation with classical philosophical books
 
 ## Prerequisites
 
 - Node.js >= 23.10.0
 - OpenAI API key
-- Classical philosophical texts (included in the `texts` directory)
+- Classical philosophical books (included in the `src/data/books` directory)
 
 ## Installation
 
