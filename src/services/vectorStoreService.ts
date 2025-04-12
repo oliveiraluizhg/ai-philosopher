@@ -39,12 +39,11 @@ const StateAnnotation = Annotation.Root({
   answer: Annotation<string>,
 });
 
-// Load metadata from JSON file
-const metadataPath = path.join(`${config.dataDir}/books`, "metadata.json");
-const booksMetadata = JSON.parse(fs.readFileSync(metadataPath, "utf-8"));
-
 // Function to get metadata by filename
 function getMetadataByFilename(filename: string) {
+  // Load metadata from JSON file
+  const metadataPath = path.join(`${config.dataDir}/books`, "metadata.json");
+  const booksMetadata = JSON.parse(fs.readFileSync(metadataPath, "utf-8"));
   const book = booksMetadata.find((book: any) => book.source === filename);
   return book
     ? {
