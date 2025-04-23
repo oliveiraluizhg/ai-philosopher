@@ -1,5 +1,5 @@
 import express from "express";
-import { queryVectorStore } from "../services/vectorStoreService";
+import { generateWisdom } from "../services/philosophyOrchestrator";
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.post("/wisdom", async (req, res) => {
       return res.status(400).json({ error: "Theme is required" });
     }
 
-    const response = await queryVectorStore(theme);
+    const response = await generateWisdom(theme);
 
     res.json(response);
   } catch (error) {

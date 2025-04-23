@@ -94,3 +94,8 @@ ai-philosopher/
 ├── package.json
 └── README.md
 ```
+
+## Future
+
+- Sentiment Analysis: Add mood detection to adapt tone - "This theme has negative sentiment, adjusting to provide comfort rather than challenge."
+- Citation Metadata: Include in output - "Source: Meditations by Marcus Aurelius, Book 5, Verse 16."

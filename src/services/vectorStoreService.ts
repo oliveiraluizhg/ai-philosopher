@@ -1,25 +1,12 @@
-import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
 import { TextLoader } from "langchain/document_loaders/fs/text";
 import { Document } from "langchain/document";
 import { config } from "../config/env";
-import { FewShotPromptTemplate, PromptTemplate } from "@langchain/core/prompts";
-import { Annotation, StateGraph } from "@langchain/langgraph";
-import { z } from "zod";
 import * as fs from "fs";
 import * as path from "path";
-
-// Define the structured output schema
-const outputSchema = z.object({
-  title: z.string().describe("The title of the philosophical insight"),
-  content: z
-    .string()
-    .describe(
-      "The philosophical content generated based on the theme and context"
-    ),
-});
 
 // Initialize embeddings
 const embeddings = new OpenAIEmbeddings({
@@ -27,17 +14,6 @@ const embeddings = new OpenAIEmbeddings({
 });
 
 const vectorStore = new MemoryVectorStore(embeddings);
-
-// Define state for application
-const InputStateAnnotation = Annotation.Root({
-  theme: Annotation<string>,
-});
-
-const StateAnnotation = Annotation.Root({
-  theme: Annotation<string>,
-  context: Annotation<Document[]>,
-  answer: Annotation<string>,
-});
 
 // Function to get metadata by filename
 function getMetadataByFilename(filename: string) {
@@ -100,80 +76,15 @@ export async function initializeVectorStore(): Promise<boolean> {
   }
 }
 
-const retrieve = async (state: typeof InputStateAnnotation.State) => {
-  const retrievedDocs = await vectorStore.maxMarginalRelevanceSearch(
-    state.theme,
-    { k: 5, fetchK: 20, lambda: 0.7 }
-  );
-  return { context: retrievedDocs };
-};
-
-const generate = async (state: typeof StateAnnotation.State) => {
-  // Load newsletters as examples
-  const newslettersPath = path.join(config.dataDir, "newsletters.json");
-  const newsletters = JSON.parse(fs.readFileSync(newslettersPath, "utf-8"));
-
-  const examples = newsletters.map((newsletter: any) => ({
-    input: newsletter.theme,
-    output: newsletter.content,
-  }));
-
-  const examplePrompt = new PromptTemplate({
-    template: "Theme: {input}\nContent: {output}",
-    inputVariables: ["input", "output"],
-  });
-
-  const fewShotPrompt = new FewShotPromptTemplate({
-    examples,
-    examplePrompt,
-    prefix: `You are an AI philosopher assistant. Create content based on the given theme, using the retrieved context as inspiration.
-    Guidelines for your responses:
-    - Be concise yet profound
-    - Connect ancient wisdom to modern practical application
-    - Use rhetorical questions and bold assertions
-    - Maintain a direct, thoughtful, and challenging tone`,
-    suffix: `
-      Context: {context}
-      Theme: {theme}`,
-    inputVariables: ["context", "theme"],
-  });
-
-  const docsContent = state.context
-    .map((doc) => {
-      const metadata = doc.metadata;
-      return `[From ${metadata.author}'s "${metadata.title}"]\n${doc.pageContent}`;
-    })
-    .join("\n\n");
-
-  const messages = await fewShotPrompt.invoke({
-    theme: state.theme,
-    context: docsContent,
-  });
-
-  const llm = new ChatOpenAI({
-    model: config.modelConfig.modelName,
-    temperature: config.modelConfig.temperature,
-  });
-
-  const structuredLLM = llm.withStructuredOutput(outputSchema);
-  const response = await structuredLLM.invoke(messages);
-  return { answer: response };
-};
-
-// Compile application and test
-const graph = new StateGraph(StateAnnotation)
-  .addNode("retrieve", retrieve)
-  .addNode("generate", generate)
-  .addEdge("__start__", "retrieve")
-  .addEdge("retrieve", "generate")
-  .addEdge("generate", "__end__")
-  .compile();
-
 // Function to query the vector store with a theme
 export async function queryVectorStore(theme: string): Promise<any> {
   try {
-    const result = await graph.invoke({ theme });
-    return result;
+    const retrievedDocs = await vectorStore.maxMarginalRelevanceSearch(theme, {
+      k: 5,
+      fetchK: 20,
+      lambda: 0.7,
+    });
+    return retrievedDocs;
   } catch (error) {
     console.error("Error querying vector store:", error);
     throw error;
